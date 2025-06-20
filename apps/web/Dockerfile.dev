@@ -1,0 +1,23 @@
+# Development Dockerfile for Next.js web app
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY apps/web/package*.json ./apps/web/
+COPY packages/db/package*.json ./packages/db/
+COPY packages/config/package*.json ./packages/config/
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Generate Prisma client
+RUN cd packages/db && npx prisma generate
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

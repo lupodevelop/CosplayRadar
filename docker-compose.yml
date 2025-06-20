@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: cosplayradar-db
+    environment:
+      POSTGRES_DB: cosplayradar_dev
+      POSTGRES_USER: cosplayradar
+      POSTGRES_PASSWORD: dev_password_123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - cosplayradar-network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: cosplayradar-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cosplayradar-network
+
+  # Next.js Web App (development)
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
+    container_name: cosplayradar-web
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://cosplayradar:dev_password_123@postgres:5432/cosplayradar_dev
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=dev-secret-key-change-in-production
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web:/app
+      - ./packages:/packages
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cosplayradar-network
+    profiles:
+      - web
+
+  # Python Scraper (development)
+  scraper:
+    build:
+      context: .
+      dockerfile: apps/scraper/Dockerfile.dev
+    container_name: cosplayradar-scraper
+    environment:
+      - DATABASE_URL=postgresql://cosplayradar:dev_password_123@postgres:5432/cosplayradar_dev
+      - REDIS_URL=redis://redis:6379
+      - LOG_LEVEL=INFO
+      - RUN_SCHEDULER=true
+      - SCHEDULE_INTERVAL=1800  # 30 minutes for development
+    volumes:
+      - ./apps/scraper:/app
+      - scraper_logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cosplayradar-network
+    profiles:
+      - scraper
+
+volumes:
+  postgres_data:
+  redis_data:
+  scraper_logs:
+
+networks:
+  cosplayradar-network:
+    driver: bridge

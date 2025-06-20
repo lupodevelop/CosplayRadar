@@ -1,0 +1,28 @@
+{
+  "name": "@cosplayradar/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "dev": "prisma generate --watch",
+    "build": "prisma generate",
+    "lint": "echo 'No linting for db package'",
+    "clean": "rm -rf node_modules",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx seed.ts",
+    "setup": "prisma generate && prisma db push",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
+  }
+}

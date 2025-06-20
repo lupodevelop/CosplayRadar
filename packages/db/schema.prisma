@@ -1,0 +1,477 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String             @id @default(cuid())
+  name          String?
+  email         String             @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  role          UserRole           @default(CREATOR)
+  subscription  SubscriptionStatus @default(FREE)
+  plan          PlanType           @default(FREE)
+  username      String?            @unique
+  bio           String?
+  avatar        String?
+  website       String?
+  socialLinks   Json?
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model Character {
+  id              String      @id @default(cuid())
+  name            String
+  series          String
+  category        Category
+  difficulty      Int         @default(1)
+  popularity      Float       @default(0.0)
+  imageUrl        String?
+  description     String?
+  tags            String[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  fandom          String?
+  gender          String?
+  popularityScore Float       @default(0.0)
+  sourceUrl       String?
+  anilistId       Int?
+  media_title     String?
+  source          String?     @default("jikan")
+  trends          TrendData[]
+  googleTrends    GoogleTrendData[] // Nuovo: trend multi-dimensionali
+  trendSummary    TrendSummary?     // Vista aggregata per performance
+  animeReleases   AnimeRelease[]    // Serie associate
+  trendAnalysis   CharacterTrendAnalysis? // Analisi predittiva
+
+  @@map("characters")
+}
+
+model TrendData {
+  id          String    @id @default(cuid())
+  characterId String    @map("character_id")
+  platform    Platform
+  mentions    Int       @default(0)
+  engagement  Float     @default(0.0)
+  sentiment   Float     @default(0.0)
+  date        DateTime  @default(now())
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@map("trend_data")
+}
+
+// Nuovo modello per Google Trends multi-dimensionali
+model GoogleTrendData {
+  id            String           @id @default(cuid())
+  characterId   String           @map("character_id")
+  
+  // Dimensioni
+  region        TrendRegion      @default(GLOBAL)
+  keywordType   KeywordType      @map("keyword_type")
+  keyword       String           // keyword effettiva usata per la query
+  
+  // Trend scores (0-100 da Google Trends)
+  trend7d       Float            @default(0.0) @map("trend_7d")
+  trend30d      Float            @default(0.0) @map("trend_30d") 
+  trend90d      Float            @default(0.0) @map("trend_90d")
+  
+  // Metadati
+  confidence    Float            @default(1.0) // qualità del dato (0-1)
+  queryVolume   QueryVolume      @default(LOW) @map("query_volume")
+  
+  // Timestamps
+  date          DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  
+  // Relazioni
+  character     Character        @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  
+  // Indici per performance
+  @@index([characterId, region, keywordType])
+  @@index([region, keywordType, trend7d])
+  @@index([date])
+  @@unique([characterId, region, keywordType, keyword]) // Evita duplicati
+  
+  @@map("google_trend_data")
+}
+
+// Vista aggregata per trend summary (ottimizzazione query)
+model TrendSummary {
+  id                    String      @id @default(cuid())
+  characterId           String      @unique @map("character_id")
+  
+  // Scores aggregati globali
+  globalCosplayScore    Float       @default(0.0) @map("global_cosplay_score")
+  globalCharacterScore  Float       @default(0.0) @map("global_character_score")
+  globalShoppingScore   Float       @default(0.0) @map("global_shopping_score")
+  
+  // Scores per regioni chiave
+  usCosplayScore        Float       @default(0.0) @map("us_cosplay_score")
+  jpCharacterScore      Float       @default(0.0) @map("jp_character_score")
+  itCosplayScore        Float       @default(0.0) @map("it_cosplay_score")
+  
+  // Scoring complessivo
+  overallTrendScore     Float       @default(0.0) @map("overall_trend_score")
+  cosplayTrendScore     Float       @default(0.0) @map("cosplay_trend_score")
+  risingMarketsJson     Json?       @map("rising_markets") // ["US", "IT"] 
+  bestMarket            TrendRegion? @map("best_market")
+  
+  // Metadata
+  lastUpdated           DateTime    @updatedAt @map("last_updated")
+  dataQuality           Float       @default(1.0) @map("data_quality") // 0-1
+  
+  // Relazioni
+  character             Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  
+  @@map("trend_summary")
+}
+
+enum UserRole {
+  CREATOR
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  FREE
+  PREMIUM
+  CANCELED
+}
+
+enum PlanType {
+  FREE
+  PREMIUM
+}
+
+enum Category {
+  ANIME
+  MANGA
+  VIDEOGAME
+  MOVIE
+  TV_SHOW
+  COMIC
+  OTHER
+}
+
+enum Platform {
+  REDDIT
+  TWITTER
+  INSTAGRAM
+  TIKTOK
+  ZEROCHAN
+  OTHER
+}
+
+// Nuovi enum per Google Trends
+
+enum TrendRegion {
+  GLOBAL  // Mondiale
+  US      // Stati Uniti
+  JP      // Giappone  
+  IT      // Italia
+  UK      // Regno Unito
+  DE      // Germania
+  FR      // Francia
+  BR      // Brasile
+  KR      // Corea del Sud
+  CA      // Canada
+  AU      // Australia
+  MX      // Messico
+}
+
+enum KeywordType {
+  COSPLAY     // "[nome] cosplay"
+  CHARACTER   // "[nome] [serie]" 
+  COSTUME     // "[nome] costume"
+  FANART      // "[nome] fanart"
+  FIGURE      // "[nome] figure"
+  MERCH       // "[nome] merchandise"
+  GENERAL     // "[nome]" solo
+}
+
+enum QueryVolume {
+  LOW         // Poco volume di ricerca
+  MEDIUM      // Volume medio
+  HIGH        // Alto volume
+  VERY_HIGH   // Volume virale/esplosivo
+}
+
+// ==========================================
+// MODELLI PER ANTICIPAZIONE TRENDS
+// ==========================================
+
+// Anime/Manga in uscita o correnti
+model AnimeRelease {
+  id            String              @id @default(cuid())
+  anilistId     Int?                @unique // ID da AniList
+  malId         Int?                // ID da MyAnimeList (Jikan)
+  
+  // Dati base
+  title         String
+  englishTitle  String?
+  nativeTitle   String?
+  status        AnimeStatus         @default(NOT_YET_RELEASED)
+  format        MediaFormat         @default(TV)
+  
+  // Date e stagione
+  startDate     DateTime?
+  endDate       DateTime?
+  season        AnimeSeason?
+  seasonYear    Int?
+  
+  // Metadati
+  episodes      Int?
+  duration      Int?                // Durata in minuti
+  source        MediaSource?        // Manga, Light Novel, etc.
+  genres        String[]
+  tags          String[]
+  
+  // Popolarità e score
+  popularity    Int                 @default(0)
+  meanScore     Float?
+  favourites    Int                 @default(0)
+  
+  // Media
+  coverImage    String?
+  bannerImage   String?
+  description   String?
+  siteUrl       String?
+  
+  // Trend analysis
+  isNew         Boolean             @default(false)    // Serie nuova (< 1 mese)
+  isUpcoming    Boolean             @default(false)    // Uscita imminente (< 2 settimane)
+  isTrending    Boolean             @default(false)    // In trend su AniList
+  trendRank     Int?                // Posizione in classifica trend
+  
+  // Timestamps
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  lastChecked   DateTime            @default(now())
+  
+  // Relazioni
+  characters    Character[]         // Personaggi associati
+  trendHistory  AnimeReleaseTrend[]
+  
+  @@index([season, seasonYear])
+  @@index([startDate])
+  @@index([status, isUpcoming])
+  @@index([isTrending, trendRank])
+  @@map("anime_releases")
+}
+
+// Storico trend per anime/manga
+model AnimeReleaseTrend {
+  id                String       @id @default(cuid())
+  animeReleaseId    String       @map("anime_release_id")
+  
+  // Metriche AniList
+  popularity        Int          @default(0)
+  favourites        Int          @default(0)
+  trendRank         Int?
+  
+  // Metriche Google Trends
+  googleTrendScore  Float        @default(0.0)
+  
+  // Analisi
+  momentumScore     Float        @default(0.0)    // Velocità di crescita
+  anticipationScore Float        @default(0.0)    // Score di anticipazione
+  
+  // Timestamp
+  date              DateTime     @default(now())
+  
+  // Relazioni
+  animeRelease      AnimeRelease @relation(fields: [animeReleaseId], references: [id], onDelete: Cascade)
+  
+  @@index([animeReleaseId, date])
+  @@map("anime_release_trends")
+}
+
+// Trend esteso per personaggi con analisi predittiva
+model CharacterTrendAnalysis {
+  id              String            @id @default(cuid())
+  characterId     String            @unique @map("character_id")
+  
+  // Flags di analisi
+  isNew           Boolean           @default(false)    // Personaggio da serie nuova
+  isUpcoming      Boolean           @default(false)    // Da serie in uscita
+  isTrendingUp    Boolean           @default(false)    // Trend in crescita
+  isBreakout      Boolean           @default(false)    // Potenziale breakout
+  
+  // Score compositi
+  popularityScore Float             @default(0.0)     // Score AniList
+  trendScore      Float             @default(0.0)     // Score Google Trends attuale
+  momentumScore   Float             @default(0.0)     // Velocità di crescita
+  anticipationScore Float           @default(0.0)     // Score predittivo
+  overallScore    Float             @default(0.0)     // Score finale combinato
+  
+  // Analisi temporale
+  trendDelta7d    Float             @default(0.0)     // Cambio ultimi 7 giorni (%)
+  trendDelta30d   Float             @default(0.0)     // Cambio ultimi 30 giorni (%)
+  peakScore       Float             @default(0.0)     // Score massimo raggiunto
+  peakDate        DateTime?                            // Data del picco
+  
+  // Classificazione
+  trendCategory   TrendCategory     @default(STABLE)
+  breakoutPotential BreakoutLevel   @default(LOW)
+  seasonalFactor  Float             @default(1.0)     // Fattore stagionale
+  
+  // Metadati
+  confidence      Float             @default(0.5)     // Confidenza dell'analisi (0-1)
+  dataQuality     Float             @default(0.5)     // Qualità dei dati (0-1)
+  
+  // Timestamps
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  lastAnalyzed    DateTime          @default(now())
+  
+  // Relazioni
+  character       Character         @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  weeklyTrends    CharacterWeeklyTrend[]
+  
+  @@map("character_trend_analysis")
+}
+
+// Trend settimanali per tracking dettagliato
+model CharacterWeeklyTrend {
+  id                     String                   @id @default(cuid())
+  characterTrendId       String                   @map("character_trend_id")
+  
+  // Periodo
+  weekStart              DateTime
+  weekEnd                DateTime
+  
+  // Metriche Google Trends
+  cosplayTrendScore      Float                    @default(0.0)
+  characterTrendScore    Float                    @default(0.0)
+  generalTrendScore      Float                    @default(0.0)
+  
+  // Metriche AniList
+  anilistPopularity      Int                      @default(0)
+  anilistFavourites      Int                      @default(0)
+  
+  // Metriche Social (future)
+  redditMentions         Int                      @default(0)
+  twitterMentions        Int                      @default(0)
+  
+  // Score compositi settimanali
+  weeklyScore            Float                    @default(0.0)
+  growthRate             Float                    @default(0.0)     // % crescita vs settimana precedente
+  volatility             Float                    @default(0.0)     // Volatilità del trend
+  
+  // Classificazione settimanale
+  weeklyCategory         TrendCategory            @default(STABLE)
+  
+  // Timestamps
+  createdAt              DateTime                 @default(now())
+  
+  // Relazioni
+  characterTrend         CharacterTrendAnalysis   @relation(fields: [characterTrendId], references: [id], onDelete: Cascade)
+  
+  @@unique([characterTrendId, weekStart])
+  @@index([weekStart, weekEnd])
+  @@map("character_weekly_trends")
+}
+
+// Nuovi enum per l'analisi trends
+
+enum AnimeStatus {
+  NOT_YET_RELEASED  // Non ancora uscito
+  RELEASING         // In corso
+  FINISHED          // Finito
+  CANCELLED         // Cancellato
+  HIATUS           // In pausa
+}
+
+enum MediaFormat {
+  TV                // Serie TV
+  TV_SHORT          // Serie TV corta
+  MOVIE             // Film
+  SPECIAL           // Speciale
+  OVA               // OVA
+  ONA               // ONA
+  MUSIC             // Video musicale
+  MANGA             // Manga
+  NOVEL             // Light Novel
+  ONE_SHOT          // One-shot
+}
+
+enum AnimeSeason {
+  SPRING            // Primavera
+  SUMMER            // Estate
+  FALL              // Autunno
+  WINTER            // Inverno
+}
+
+enum MediaSource {
+  ORIGINAL          // Originale
+  MANGA             // Manga
+  LIGHT_NOVEL       // Light Novel
+  VISUAL_NOVEL      // Visual Novel
+  VIDEO_GAME        // Videogioco
+  OTHER             // Altro
+}
+
+enum TrendCategory {
+  RISING            // In crescita
+  STABLE            // Stabile
+  DECLINING         // In declino
+  VIRAL             // Virale
+  EMERGING          // Emergente
+  BREAKOUT          // Breakout
+  SEASONAL          // Stagionale
+}
+
+enum BreakoutLevel {
+  LOW               // Basso potenziale
+  MEDIUM            // Medio potenziale
+  HIGH              // Alto potenziale
+  IMMINENT          // Breakout imminente
+}

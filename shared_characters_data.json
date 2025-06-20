@@ -1,0 +1,302 @@
+[
+  {
+    "id": 127691,
+    "name": "Satoru Gojou",
+    "favourites": 33805,
+    "media_title": "Jujutsu Kaisen",
+    "media_popularity": 785036,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b127691-9zqh1xpIubn7.png",
+    "series": "Jujutsu Kaisen",
+    "fetched_at": "2025-06-20T15:02:23.083784"
+  },
+  {
+    "id": 40,
+    "name": "Luffy Monkey",
+    "favourites": 32163,
+    "media_title": "ONE PIECE",
+    "media_popularity": 611111,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png",
+    "series": "ONE PIECE",
+    "fetched_at": "2025-06-20T15:02:23.083805"
+  },
+  {
+    "id": 45627,
+    "name": "Levi",
+    "favourites": 31527,
+    "media_title": "Shingeki no Kyojin",
+    "media_popularity": 877932,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png",
+    "series": "Shingeki no Kyojin",
+    "fetched_at": "2025-06-20T15:02:23.083811"
+  },
+  {
+    "id": 27,
+    "name": "Killua Zoldyck",
+    "favourites": 29599,
+    "media_title": "HUNTER\u00d7HUNTER (2011)",
+    "media_popularity": 708416,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b27-Z5O02kQUydpT.jpg",
+    "series": "HUNTER\u00d7HUNTER (2011)",
+    "fetched_at": "2025-06-20T15:02:23.083815"
+  },
+  {
+    "id": 40882,
+    "name": "Eren Yeager",
+    "favourites": 26607,
+    "media_title": "Shingeki no Kyojin",
+    "media_popularity": 877932,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b40882-dsj7IP943WFF.jpg",
+    "series": "Shingeki no Kyojin",
+    "fetched_at": "2025-06-20T15:02:23.083819"
+  },
+  {
+    "id": 62,
+    "name": "Zoro Roronoa",
+    "favourites": 26099,
+    "media_title": "ONE PIECE",
+    "media_popularity": 611111,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png",
+    "series": "ONE PIECE",
+    "fetched_at": "2025-06-20T15:02:23.083822"
+  },
+  {
+    "id": 88572,
+    "name": "Emilia",
+    "favourites": 25831,
+    "media_title": "Re:Zero kara Hajimeru Isekai Seikatsu",
+    "media_popularity": 509983,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b88572-IzTwXEHSobRs.jpg",
+    "series": "Re:Zero kara Hajimeru Isekai Seikatsu",
+    "fetched_at": "2025-06-20T15:02:23.083826"
+  },
+  {
+    "id": 417,
+    "name": "Lelouch Lamperouge",
+    "favourites": 23571,
+    "media_title": "Code Geass: Hangyaku no Lelouch",
+    "media_popularity": 411709,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b417-gVLmIJu9phcK.png",
+    "series": "Code Geass: Hangyaku no Lelouch",
+    "fetched_at": "2025-06-20T15:02:23.083829"
+  },
+  {
+    "id": 422,
+    "name": "Guts",
+    "favourites": 21425,
+    "media_title": "Kenpuu Denki Berserk",
+    "media_popularity": 144847,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b422-XTaiTuvRohsV.png",
+    "series": "Kenpuu Denki Berserk",
+    "fetched_at": "2025-06-20T15:02:23.083832"
+  },
+  {
+    "id": 87275,
+    "name": "Ken Kaneki",
+    "favourites": 21392,
+    "media_title": "Tokyo Ghoul",
+    "media_popularity": 628625,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b87275-mb13EWZBdbh3.png",
+    "series": "Tokyo Ghoul",
+    "fetched_at": "2025-06-20T15:02:23.083835"
+  },
+  {
+    "id": 40881,
+    "name": "Mikasa Ackerman",
+    "favourites": 20866,
+    "media_title": "Shingeki no Kyojin",
+    "media_popularity": 877932,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b40881-F3gr1PkreDvj.png",
+    "series": "Shingeki no Kyojin",
+    "fetched_at": "2025-06-20T15:02:23.083839"
+  },
+  {
+    "id": 89334,
+    "name": "Arataka Reigen",
+    "favourites": 20762,
+    "media_title": "Mob Psycho 100",
+    "media_popularity": 526925,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b89334-OPj1hCzvrt7X.png",
+    "series": "Mob Psycho 100",
+    "fetched_at": "2025-06-20T15:02:23.083842"
+  },
+  {
+    "id": 71,
+    "name": "L Lawliet",
+    "favourites": 20652,
+    "media_title": "DEATH NOTE",
+    "media_popularity": 798454,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b71-1W4panC53vfs.png",
+    "series": "DEATH NOTE",
+    "fetched_at": "2025-06-20T15:02:23.083845"
+  },
+  {
+    "id": 137080,
+    "name": "Makima",
+    "favourites": 20062,
+    "media_title": "Chainsaw Man",
+    "media_popularity": 474092,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b137080-UHcynYNjb5ZU.png",
+    "series": "Chainsaw Man",
+    "fetched_at": "2025-06-20T15:02:23.083848"
+  },
+  {
+    "id": 34470,
+    "name": "Kurisu Makise",
+    "favourites": 19421,
+    "media_title": "Steins;Gate",
+    "media_popularity": 504936,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b34470-Jw2LXZBL5R8i.png",
+    "series": "Steins;Gate",
+    "fetched_at": "2025-06-20T15:02:23.083852"
+  },
+  {
+    "id": 10138,
+    "name": "Thorfinn Karlsefni",
+    "favourites": 18888,
+    "media_title": "VINLAND SAGA",
+    "media_popularity": 432545,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b10138-zOPrka0ddZOR.png",
+    "series": "VINLAND SAGA",
+    "fetched_at": "2025-06-20T15:02:23.083855"
+  },
+  {
+    "id": 120649,
+    "name": "Kaguya Shinomiya",
+    "favourites": 18645,
+    "media_title": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
+    "media_popularity": 471798,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b120649-NPaWaIpWy60E.png",
+    "series": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
+    "fetched_at": "2025-06-20T15:02:23.083858"
+  },
+  {
+    "id": 127222,
+    "name": "Mai Sakurajima",
+    "favourites": 18456,
+    "media_title": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "media_popularity": 481754,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b127222-Jh5hhP7vZ7s1.png",
+    "series": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "fetched_at": "2025-06-20T15:02:23.083861"
+  },
+  {
+    "id": 35252,
+    "name": "Rintarou Okabe",
+    "favourites": 18325,
+    "media_title": "Steins;Gate",
+    "media_popularity": 504936,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b35252-DY9TW6pusqeh.png",
+    "series": "Steins;Gate",
+    "fetched_at": "2025-06-20T15:02:23.083870"
+  },
+  {
+    "id": 14,
+    "name": "Itachi Uchiha",
+    "favourites": 18186,
+    "media_title": "NARUTO",
+    "media_popularity": 608878,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b14-9Kb1E5oel1ke.png",
+    "series": "NARUTO",
+    "fetched_at": "2025-06-20T15:02:23.083873"
+  },
+  {
+    "id": 137079,
+    "name": "Power",
+    "favourites": 17907,
+    "media_title": "Chainsaw Man",
+    "media_popularity": 474092,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b137079-6yLEUYR3bmpr.png",
+    "series": "Chainsaw Man",
+    "fetched_at": "2025-06-20T15:02:23.083881"
+  },
+  {
+    "id": 127212,
+    "name": "Yuuji Itadori",
+    "favourites": 17734,
+    "media_title": "Jujutsu Kaisen",
+    "media_popularity": 785036,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b127212-FVm2tD0erQ5B.png",
+    "series": "Jujutsu Kaisen",
+    "fetched_at": "2025-06-20T15:02:23.083884"
+  },
+  {
+    "id": 90169,
+    "name": "Violet Evergarden",
+    "favourites": 17626,
+    "media_title": "Violet Evergarden",
+    "media_popularity": 463447,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b90169-4wr1Zehnsac8.png",
+    "series": "Violet Evergarden",
+    "fetched_at": "2025-06-20T15:02:23.083888"
+  },
+  {
+    "id": 89616,
+    "name": "Shigeo Kageyama",
+    "favourites": 17542,
+    "media_title": "Mob Psycho 100",
+    "media_popularity": 526925,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b89616-dXmdOc7L6SDi.png",
+    "series": "Mob Psycho 100",
+    "fetched_at": "2025-06-20T15:02:23.083891"
+  },
+  {
+    "id": 500,
+    "name": "Sakura Matou",
+    "favourites": 17428,
+    "media_title": "Fate/Zero",
+    "media_popularity": 304096,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b500-NQrLbnBr1sDv.png",
+    "series": "Fate/Zero",
+    "fetched_at": "2025-06-20T15:02:23.083894"
+  },
+  {
+    "id": 85,
+    "name": "Kakashi Hatake",
+    "favourites": 17348,
+    "media_title": "NARUTO",
+    "media_popularity": 608878,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b85-mkVBh2yjxjmx.png",
+    "series": "NARUTO",
+    "fetched_at": "2025-06-20T15:02:24.392227"
+  },
+  {
+    "id": 28,
+    "name": "Kurapika",
+    "favourites": 17175,
+    "media_title": "HUNTER\u00d7HUNTER (2011)",
+    "media_popularity": 708416,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b28-ivA7UGnfE40a.png",
+    "series": "HUNTER\u00d7HUNTER (2011)",
+    "fetched_at": "2025-06-20T15:02:24.392237"
+  },
+  {
+    "id": 176754,
+    "name": "Frieren",
+    "favourites": 16723,
+    "media_title": "Sousou no Frieren",
+    "media_popularity": 312009,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b176754-PCnpqIOkjhFk.png",
+    "series": "Sousou no Frieren",
+    "fetched_at": "2025-06-20T15:02:24.392239"
+  },
+  {
+    "id": 130102,
+    "name": "Denji",
+    "favourites": 16707,
+    "media_title": "Chainsaw Man",
+    "media_popularity": 474092,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b130102-FO1VHNnEnLlB.png",
+    "series": "Chainsaw Man",
+    "fetched_at": "2025-06-20T15:02:24.392240"
+  },
+  {
+    "id": 80,
+    "name": "Light Yagami",
+    "favourites": 16608,
+    "media_title": "DEATH NOTE",
+    "media_popularity": 798454,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/character/large/b80-26EhwSsSqQ50.png",
+    "series": "DEATH NOTE",
+    "fetched_at": "2025-06-20T15:02:24.392242"
+  }
+]
