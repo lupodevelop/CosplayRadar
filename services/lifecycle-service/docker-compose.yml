@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  lifecycle-service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - DATABASE_URL=postgresql://cosplayradar:dev_password_123@host.docker.internal:5432/cosplayradar_dev
+      - LIFECYCLE_CONFIG_PATH=/app/config/lifecycle_rules.json
+      - PORT=8083
+      - HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+    networks:
+      - cosplayradar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Database (condiviso con altri servizi)
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: cosplayradar
+      POSTGRES_PASSWORD: dev_password_123
+      POSTGRES_DB: cosplayradar_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    networks:
+      - cosplayradar-network
+
+  # Scheduler per esecuzione automatica
+  lifecycle-scheduler:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "scheduler.py"]
+    environment:
+      - DATABASE_URL=postgresql://cosplayradar:dev_password_123@postgres:5432/cosplayradar_dev
+      - LIFECYCLE_CONFIG_PATH=/app/config/lifecycle_rules.json
+      - SCHEDULE_INTERVAL_HOURS=24
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+      - lifecycle-service
+    networks:
+      - cosplayradar-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  cosplayradar-network:
+    driver: bridge

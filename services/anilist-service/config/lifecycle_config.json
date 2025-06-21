@@ -1,0 +1,150 @@
+{
+  "lifecycle_config": {
+    "version": "1.0",
+    "algorithm": "hybrid_performance_based",
+    "description": "Configurazione lifecycle management per serie anime/manga",
+    
+    "periods": {
+      "grace_period_days": 42,
+      "extended_grace_days": 28,
+      "archive_cleanup_days": 90,
+      "deletion_ready_days": 180
+    },
+    
+    "thresholds": {
+      "keep_active": {
+        "min_composite_score": 50.0,
+        "min_popularity": 30.0,
+        "min_favourites": 100,
+        "min_character_trending": 70.0,
+        "description": "Soglie per mantenere serie in tracking attivo"
+      },
+      
+      "extend_grace": {
+        "min_composite_score_ratio": 0.7,
+        "min_any_activity": true,
+        "description": "Condizioni per estendere periodo di grazia"
+      },
+      
+      "archive": {
+        "default_action": true,
+        "description": "Serie che non soddisfano altre condizioni vengono archiviate"
+      }
+    },
+    
+    "scoring": {
+      "composite_weights": {
+        "popularity": 0.3,
+        "favourites": 0.2,
+        "trending": 0.2,
+        "character_count_multiplier": 5,
+        "avg_character_trending": 0.2,
+        "max_character_trending": 0.1
+      },
+      
+      "bonus_conditions": {
+        "high_character_engagement": {
+          "condition": "max_character_trending >= 80",
+          "bonus_multiplier": 1.2,
+          "description": "Bonus per serie con personaggi molto trendy"
+        },
+        
+        "growing_trend": {
+          "condition": "trend_growth_rate >= 1.15",
+          "bonus_multiplier": 1.15,
+          "description": "Bonus per serie con trend in crescita"
+        },
+        
+        "seasonal_relevance": {
+          "condition": "current_season_match",
+          "bonus_multiplier": 1.1,
+          "description": "Bonus per serie della stagione corrente"
+        }
+      }
+    },
+    
+    "automation": {
+      "run_frequency_hours": 24,
+      "batch_size": 50,
+      "enable_notifications": true,
+      "enable_automatic_archiving": true,
+      "enable_automatic_deletion": false,
+      "require_manual_approval_for_deletion": true
+    },
+    
+    "preservation_rules": {
+      "never_archive": {
+        "min_all_time_popularity": 1000,
+        "min_all_time_favourites": 5000,
+        "classic_series_years": 5,
+        "description": "Serie che non vengono mai archiviate automaticamente"
+      },
+      
+      "high_priority": {
+        "current_trending_threshold": 90.0,
+        "recent_viral_activity": true,
+        "cosplay_frequency_high": true,
+        "description": "Serie ad alta priorità con regole speciali"
+      }
+    },
+    
+    "notifications": {
+      "discord_webhook": null,
+      "email_alerts": [],
+      "log_level": "INFO",
+      "include_statistics": true,
+      "include_decision_reasoning": true
+    }
+  },
+  
+  "status_transitions": {
+    "NOT_YET_RELEASED": {
+      "next_states": ["RELEASING"],
+      "lifecycle_stage": "upcoming",
+      "auto_transition_conditions": {
+        "start_date_passed": true,
+        "episodes_available": true
+      }
+    },
+    
+    "RELEASING": {
+      "next_states": ["FINISHED", "CANCELLED"],
+      "lifecycle_stage": "grace_period",
+      "evaluation_frequency_days": 7
+    },
+    
+    "FINISHED": {
+      "next_states": ["archived"],
+      "lifecycle_stage": "archived",
+      "auto_archive_delay_days": 14
+    },
+    
+    "CANCELLED": {
+      "next_states": ["archived"],
+      "lifecycle_stage": "archived",
+      "auto_archive_delay_days": 7
+    }
+  },
+  
+  "monitoring": {
+    "metrics_to_track": [
+      "series_count_by_stage",
+      "decisions_per_day",
+      "archive_rate",
+      "false_positive_rate",
+      "user_engagement_impact"
+    ],
+    
+    "alerts": {
+      "high_archive_rate": {
+        "threshold": 0.8,
+        "description": "Alert se più del 80% delle serie vengono archiviate"
+      },
+      
+      "low_new_series_rate": {
+        "threshold": 5,
+        "description": "Alert se meno di 5 nuove serie per settimana"
+      }
+    }
+  }
+}
